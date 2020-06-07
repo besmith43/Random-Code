@@ -1,0 +1,10 @@
+switch () {
+	case  thing1, :
+		break;
+	case  thing2, :
+		break;
+	case  thing3 :
+		break;
+	default:
+		break;
+}
