@@ -64,9 +64,9 @@ def main():
         new_file = file[:len(file)-4]+"-libx265.mp4"
         
         if overwrite_flag:
-            subprocess.run(["ffmpeg", "-y", "-i", file, "-vcodec", "libx265", "-acodec", "copy", "-scodec", "copy", "-preset", "slow", new_file])
+            subprocess.run(["ffmpeg", "-y", "-i", file, "-vcodec", "libx265", "-acodec", "copy", "-scodec", "copy", new_file])
         else:
-            subprocess.run(["ffmpeg", "-i", file, "-vcodec", "libx265", "-acodec", "copy", "-scodec", "copy", "-preset", "slow", new_file])
+            subprocess.run(["ffmpeg", "-i", file, "-vcodec", "libx265", "-acodec", "copy", "-scodec", "copy", new_file])
 
 if __name__ == "__main__":
     main()
