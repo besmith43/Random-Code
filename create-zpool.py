@@ -114,9 +114,11 @@ def main():
     command = "sudo zpool create " + zpool_name + " " + zpool_raid + " " + translate_tags(zpool_disks)
 
     if d.yesno("Is this command correct? \n" + command) == d.OK:
-        save_command(command, "/home/besmith/.logs/create_zpool/")
-        subprocess.run(command)
         clear()
+        save_command(command, "/home/besmith/.logs/create_zpool/")
+        subprocess.run(command.split(" "))
+        subprocess.run(["sudo", "zpool", "set", "compression=gzip-9", zpool_name])
+        print("zpool successfully created")
     else:
         clear()
 

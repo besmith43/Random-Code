@@ -9,6 +9,9 @@ from dialog import Dialog
 def get_files(pwd):
     return [f for f in os.listdir(pwd) if os.path.isfile(os.path.join(pwd, f))]
 
+def get_folders(pwd):
+    return [d for d in os.listdir(pwd) if os.path.isdir(os.path.join(pwd, d))]
+
 def overwrite(d):
     if d.yesno("Would you like to overwrite the original files?") == d.OK:
         return True
@@ -22,6 +25,27 @@ def save(d):
         return path
     else:
         return ""
+
+def recursive(d):
+    if d.yesno("Would you like to operate recursively?") == d.OK:
+        return True
+    else:
+        return False
+
+def run_recursively(pwd, overwrite_flag, save_folder):
+    folders = get_folders(pwd)
+
+    for folder in folders:
+        if not os.path.exists(save_folder + folder):
+            #os.mkdir(save_folder + folder)
+            print("making folder: " + save_folder + folder)
+
+        run_recursively(pwd + folder + "/", overwrite_flag, save_folder + folder + "/")
+
+    files = get_files(pwd)
+
+    for video_file in files:
+        convert_video(video_file, overwrite_flag, pwd, save_folder)
 
 def write_to_file(command, log_path):
     if not os.path.exists(log_path):
@@ -40,27 +64,16 @@ def write_to_file(command, log_path):
     log_file.write(command + " - " + datetime.datetime.now().strftime("%X") + "\n")
     log_file.close()
 
-def main():
-    d = Dialog(dialog="dialog", autowidgetsize=True)
-    d.set_background_title("Convert Videos")
-    
-    files = get_files(os.getcwd())
-
-    overwrite_flag = overwrite(d)
-
-    save_folder = save(d)
-
-    for file in files:
-        new_file = save_folder + file[:len(file)-4]+"-libx265-slow-qp21"+file[-4:]
-        #print(file)
-
+def convert_video(video_file, overwrite_flag, pwd, save_folder):
+    if video_file[-4:] == ".mp4" or video_file[-4:] == ".mkv":
+        new_file = save_folder + video_file[:len(video_file)-4]+"-libx265-slow-qp21"+video_file[-4:]
         command = ["ffmpeg"]
         
         if overwrite_flag:
             command.append("-y")
 
         command.append("-i")
-        command.append(file)
+        command.append(pwd + video_file)
         command.append("-vcodec")
         command.append("libx265")
         command.append("-acodec")
@@ -77,7 +90,24 @@ def main():
 
         print("Running the following command\n" + command_str)
         write_to_file(command_str, "/home/besmith/.logs/convert-videos/")
-        #subprocess.run(command_str)
+        #subprocess.run(command)
+
+def main():
+    d = Dialog(dialog="dialog", autowidgetsize=True)
+    d.set_background_title("Convert Videos")
+
+    overwrite_flag = overwrite(d)
+
+    save_folder = save(d)
+
+    if recursive(d):
+        pwd = os.getcwd() + "/"
+        run_recursively(pwd, overwrite_flag, save_folder)
+    else:
+        files = get_files(os.getcwd())
+
+        for file in files:
+            convert_video(file, overwrite_flag, save_folder)
 
 if __name__ == "__main__":
     main()
