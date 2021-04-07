@@ -3,7 +3,7 @@
 Param(
 	[Parameter(Position=0)]
 	[string]$UpdatedFiles = "*",
-    [Parameter(Mandatory=$True,Position=1)]
+	[Parameter(Mandatory=$True,Position=1)]
 	[string]$commit_string,
 	[Parameter(Position=2)]
 	[string[]]$Remotes = $(git remote show),
@@ -16,5 +16,5 @@ git commit -m $commit_string
 foreach($remote in $Remotes)
 {
 	git pull $remote $Branch
-   	git push $remote $Branch
+	git push $remote $Branch
 }
