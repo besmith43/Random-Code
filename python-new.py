@@ -13,7 +13,7 @@ def main(program_name=os.path.basename(os.getcwd())):
         print("The program file already exists")
         exit(1)
 
-    content = "import argh\n\ndef main():\n\nif __name__ == \"__main__\":\n    argh.dispatch_command(main)\n"
+    content = "#!/usr/bin/env python3\n\nimport argh\n\ndef main():\n\nif __name__ == \"__main__\":\n    argh.dispatch_command(main)\n"
     program_file = open(name, append_write)
     program_file.write(content)
     program_file.close()
