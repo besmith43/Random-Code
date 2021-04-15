@@ -1,7 +1,7 @@
 #!/usr/bin/env pwsh
 
 param(
-	[ValidateSet("gaming","nas","web","media","compute")]
+	[ValidateSet("gaming","nas","web","media","compute","git")]
 	[Parameter(Position=0)]
 	[string]$serverName = "compute",
 	[string]$IP,
@@ -34,6 +34,11 @@ switch ($serverName)
 	"compute" {
 		$IP = "besmith.synology.me"
 		$Port = "8005"
+		$username = "besmith"
+	}
+	"git" {
+		$IP = "besmith.synology.me"
+		$Port = "8006"
 		$username = "besmith"
 	}
 }

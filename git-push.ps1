@@ -13,8 +13,8 @@ Param(
 
 git add $UpdatedFiles
 git commit -m $commit_string
+git pull
 foreach($remote in $Remotes)
 {
-	git pull $remote $Branch
 	git push $remote $Branch
 }
