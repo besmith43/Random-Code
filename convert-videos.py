@@ -98,7 +98,7 @@ def convert_video(video_file, overwrite_flag, pwd, save_folder, copy_if_error=Fa
             command.append("-n")
 
         command.append("-i")
-        command.append(pwd + video_file)
+        command.append(pwd + "/" + video_file)
         command.append("-vcodec")
         command.append("libx265")
         command.append("-acodec")
