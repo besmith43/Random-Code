@@ -1,0 +1,4 @@
+these scripts work really well on windows under git bash interpreter
+the all fail under powershell 7+ except for ruby
+
+ubuntu requires python3 in the shebang
